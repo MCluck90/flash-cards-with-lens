@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlashCard, AppState } from '../types';
 import { connect } from 'react-redux';
+import { getFlashCardsFromAppState } from '../lenses';
 
 interface Props {
   flashCards: FlashCard[];
@@ -17,7 +18,7 @@ const FlashCardsComponent: React.FC<Props> = ({ flashCards }) => (
 );
 
 const mapStateToProps = (state: AppState): Props => ({
-  flashCards: state.flashCards
+  flashCards: getFlashCardsFromAppState.get(state)
 });
 
 export const FlashCards = connect(mapStateToProps)(FlashCardsComponent);
