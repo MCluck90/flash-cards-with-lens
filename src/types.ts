@@ -5,4 +5,6 @@ export interface FlashCard {
 
 export interface AppState {
   flashCards: FlashCard[];
+  selectedCardIndex: number;
+  sideToShow: 'front' | 'back';
 }
