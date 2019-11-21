@@ -34,6 +34,7 @@ const FlashCardsComponent: React.FC<Props> = ({
 }) => (
   <div>
     <h1>{flashCards[selectedCardIndex][sideToShow]}</h1>
+    <i>{sideToShow}</i>
     <h3>
       {selectedCardIndex + 1} / {flashCards.length}
     </h3>
