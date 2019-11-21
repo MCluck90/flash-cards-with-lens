@@ -6,7 +6,7 @@ import {
   getSelectedCardIndexFromAppState,
   getSideToShowFromAppState
 } from '../lenses';
-import { flipCard, nextCard } from './effects';
+import { flipCard, nextCard, shuffle, prevCard } from './effects';
 
 interface StateProps {
   flashCards: FlashCard[];
@@ -16,7 +16,9 @@ interface StateProps {
 
 interface DispatchProps {
   flipCard(): void;
+  prevCard(): void;
   nextCard(): void;
+  shuffle(): void;
 }
 
 type Props = StateProps & DispatchProps;
@@ -26,14 +28,22 @@ const FlashCardsComponent: React.FC<Props> = ({
   sideToShow,
   flashCards,
   flipCard,
-  nextCard
+  prevCard,
+  nextCard,
+  shuffle
 }) => (
   <div>
     <h1>{flashCards[selectedCardIndex][sideToShow]}</h1>
+    <h3>
+      {selectedCardIndex + 1} / {flashCards.length}
+    </h3>
     <br />
     <button onClick={() => flipCard()}>Flip</button>
     <br />
+    <button onClick={() => prevCard()}>Prev</button>
     <button onClick={() => nextCard()}>Next</button>
+    <br />
+    <button onClick={() => shuffle()}>Shuffle</button>
   </div>
 );
 
@@ -45,7 +55,9 @@ const mapStateToProps = (state: AppState): StateProps => ({
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({
   flipCard: () => dispatch(flipCard()),
-  nextCard: () => dispatch(nextCard())
+  prevCard: () => dispatch(prevCard()),
+  nextCard: () => dispatch(nextCard()),
+  shuffle: () => dispatch(shuffle())
 });
 
 export const FlashCards = connect(

@@ -11,8 +11,16 @@ export const flipCard = () => ({
   type: 'FLIP_TODO'
 });
 
+export const prevCard = () => ({
+  type: 'PREV_CARD'
+});
+
 export const nextCard = () => ({
   type: 'NEXT_CARD'
+});
+
+export const shuffle = () => ({
+  type: 'SHUFFLE'
 });
 
 function* flipCardSaga() {
@@ -20,6 +28,18 @@ function* flipCardSaga() {
   const sideToShow: Side = yield select(selectSideToShow.get);
   const newSideToShow: Side = sideToShow === 'front' ? 'back' : 'front';
   yield put(updateState<AppState>(selectSideToShow.set(newSideToShow)));
+}
+
+function* prevCardSaga() {
+  const selectedCardIndex: number = yield select(selectSelectedCardIndex.get);
+  const flashCards: FlashCard[] = yield select(getFlashCardsFromAppState.get);
+  const numOfCards = flashCards.length;
+  const nextSelected =
+    selectedCardIndex - 1 < 0 ? numOfCards - 1 : selectedCardIndex - 1;
+  yield put(updateState<AppState>(selectSelectedCardIndex.set(nextSelected)));
+
+  // Reset to the front
+  yield put(updateState<AppState>(selectSideToShow.set('front')));
 }
 
 function* nextCardSaga() {
@@ -33,7 +53,19 @@ function* nextCardSaga() {
   yield put(updateState<AppState>(selectSideToShow.set('front')));
 }
 
+function* shuffleSaga() {
+  const flashCards: FlashCard[] = yield select(getFlashCardsFromAppState.get);
+  const newOrderFlashCards = [...flashCards];
+  newOrderFlashCards.sort((a, b) => (Math.random() > 0.5 ? 1 : -1));
+  yield put(updateState(getFlashCardsFromAppState.set(newOrderFlashCards)));
+
+  // Reset to the first card when shuffling
+  yield put(updateState(selectSelectedCardIndex.set(0)));
+}
+
 export const flashCardsSagas = [
   takeLatest('FLIP_TODO', flipCardSaga),
-  takeLatest('NEXT_CARD', nextCardSaga)
+  takeLatest('PREV_CARD', prevCardSaga),
+  takeLatest('NEXT_CARD', nextCardSaga),
+  takeLatest('SHUFFLE', shuffleSaga)
 ];

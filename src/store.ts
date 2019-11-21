@@ -31,16 +31,16 @@ store.dispatch(
     selectedCardIndex: 0,
     flashCards: [
       {
-        front: 'A',
-        back: 'a'
+        front: 'Hola',
+        back: 'Hello'
       },
       {
-        front: 'B',
-        back: 'b'
+        front: 'Como estas?',
+        back: 'How are you?'
       },
       {
-        front: 'C',
-        back: 'c'
+        front: 'Muy bien',
+        back: 'Very good'
       }
     ]
   }))
