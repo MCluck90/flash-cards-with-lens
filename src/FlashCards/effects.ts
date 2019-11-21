@@ -23,6 +23,11 @@ export const shuffle = () => ({
   type: 'SHUFFLE'
 });
 
+export const loadFlashCards = (flashCards: FlashCard[]) => ({
+  type: 'LOAD_FLASH_CARDS',
+  payload: flashCards
+});
+
 function* flipCardSaga() {
   type Side = ReturnType<typeof selectSideToShow['get']>;
   const sideToShow: Side = yield select(selectSideToShow.get);
@@ -63,9 +68,14 @@ function* shuffleSaga() {
   yield put(updateState(selectSelectedCardIndex.set(0)));
 }
 
+function* loadFlashCardsSaga({ payload }: ReturnType<typeof loadFlashCards>) {
+  yield put(updateState(getFlashCardsFromAppState.set(payload)));
+}
+
 export const flashCardsSagas = [
   takeLatest('FLIP_TODO', flipCardSaga),
   takeLatest('PREV_CARD', prevCardSaga),
   takeLatest('NEXT_CARD', nextCardSaga),
-  takeLatest('SHUFFLE', shuffleSaga)
+  takeLatest('SHUFFLE', shuffleSaga),
+  takeLatest('LOAD_FLASH_CARDS', loadFlashCardsSaga)
 ];
