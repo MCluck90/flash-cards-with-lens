@@ -14,6 +14,7 @@ import {
   loadFlashCards
 } from './effects';
 import { Card } from '../Card/Card';
+import './FlashCards.css';
 
 interface StateProps {
   flashCards: FlashCard[];
@@ -58,20 +59,20 @@ const FlashCardsComponent: React.FC<Props> = ({
     };
   };
   return (
-    <div>
-      <Card
-        {...flashCards[selectedCardIndex]}
-        sideToShow={sideToShow}
-        onClick={() => flipCard()}
-      />
+    <div className="FlashCards">
       <h3>
         {selectedCardIndex + 1} / {flashCards.length}
       </h3>
-      <br />
-      <button onClick={() => prevCard()}>Prev</button>
-      <button onClick={() => nextCard()}>Next</button>
-      <br />
       <button onClick={() => shuffle()}>Shuffle</button>
+      <div className="FlashCards-Container">
+        <button onClick={() => prevCard()}>Prev</button>
+        <Card
+          {...flashCards[selectedCardIndex]}
+          sideToShow={sideToShow}
+          onClick={() => flipCard()}
+        />
+        <button onClick={() => nextCard()}>Next</button>
+      </div>
       <br />
       <input type="file" accept="application/json" onChange={onChange} />
     </div>

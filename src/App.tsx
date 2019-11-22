@@ -5,9 +5,7 @@ import { FlashCards } from './FlashCards/FlashCards';
 const App: React.FC = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <FlashCards />
-      </header>
+      <FlashCards />
     </div>
   );
 };
