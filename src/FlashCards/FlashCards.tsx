@@ -59,12 +59,14 @@ const FlashCardsComponent: React.FC<Props> = ({
   };
   return (
     <div>
-      <Card {...flashCards[selectedCardIndex]} sideToShow={sideToShow} />
+      <Card
+        {...flashCards[selectedCardIndex]}
+        sideToShow={sideToShow}
+        onClick={() => flipCard()}
+      />
       <h3>
         {selectedCardIndex + 1} / {flashCards.length}
       </h3>
-      <br />
-      <button onClick={() => flipCard()}>Flip</button>
       <br />
       <button onClick={() => prevCard()}>Prev</button>
       <button onClick={() => nextCard()}>Next</button>

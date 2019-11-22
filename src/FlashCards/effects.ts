@@ -64,8 +64,9 @@ function* shuffleSaga() {
   newOrderFlashCards.sort((a, b) => (Math.random() > 0.5 ? 1 : -1));
   yield put(updateState(getFlashCardsFromAppState.set(newOrderFlashCards)));
 
-  // Reset to the first card when shuffling
+  // Reset to the first card and flip back to the front
   yield put(updateState(selectSelectedCardIndex.set(0)));
+  yield put(updateState<AppState>(selectSideToShow.set('front')));
 }
 
 function* loadFlashCardsSaga({ payload }: ReturnType<typeof loadFlashCards>) {

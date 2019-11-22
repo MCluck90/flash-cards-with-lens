@@ -4,10 +4,14 @@ import './Card.css';
 
 interface Props extends FlashCard {
   sideToShow: 'front' | 'back';
+  onClick(): void;
 }
 
-export const Card: React.FC<Props> = ({ sideToShow, front, back }) => (
-  <div className={`Card ${sideToShow === 'back' && 'Flipped'}`}>
+export const Card: React.FC<Props> = ({ sideToShow, front, back, onClick }) => (
+  <div
+    className={`Card ${sideToShow === 'back' && 'Flipped'}`}
+    onClick={onClick}
+  >
     <div className="Card-Inner">
       <div className="Card-Front">
         <h1>{front}</h1>
