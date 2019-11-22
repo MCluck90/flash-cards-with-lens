@@ -13,6 +13,7 @@ import {
   prevCard,
   loadFlashCards
 } from './effects';
+import { Card } from '../Card/Card';
 
 interface StateProps {
   flashCards: FlashCard[];
@@ -58,8 +59,7 @@ const FlashCardsComponent: React.FC<Props> = ({
   };
   return (
     <div>
-      <h1>{flashCards[selectedCardIndex][sideToShow]}</h1>
-      <i>{sideToShow}</i>
+      <Card {...flashCards[selectedCardIndex]} sideToShow={sideToShow} />
       <h3>
         {selectedCardIndex + 1} / {flashCards.length}
       </h3>
