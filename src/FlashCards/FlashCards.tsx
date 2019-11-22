@@ -63,18 +63,29 @@ const FlashCardsComponent: React.FC<Props> = ({
       <h3>
         {selectedCardIndex + 1} / {flashCards.length}
       </h3>
-      <button onClick={() => shuffle()}>Shuffle</button>
+      <button className="Shuffle" onClick={() => shuffle()}>
+        Shuffle
+      </button>
       <div className="FlashCards-Container">
-        <button onClick={() => prevCard()}>Prev</button>
+        <button className="Previous" onClick={() => prevCard()}>
+          Prev
+        </button>
         <Card
           {...flashCards[selectedCardIndex]}
           sideToShow={sideToShow}
           onClick={() => flipCard()}
         />
-        <button onClick={() => nextCard()}>Next</button>
+        <button className="Next" onClick={() => nextCard()}>
+          Next
+        </button>
       </div>
-      <br />
-      <input type="file" accept="application/json" onChange={onChange} />
+      <input
+        id="file"
+        type="file"
+        accept="application/json"
+        onChange={onChange}
+      />
+      <label htmlFor="file">Choose a file</label>
     </div>
   );
 };

@@ -9,6 +9,24 @@
   min-height: 100vh;
 }
 
+button,
+label {
+  background: transparent;
+  border: solid 2px white;
+  border-radius: 4px;
+  color: white;
+  padding: 0.5em;
+  cursor: pointer;
+  outline: none;
+}
+
+label {
+  display: inline-block;
+  width: calc(400px - 1em);
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
 i {
   font-size: 50%;
 }
