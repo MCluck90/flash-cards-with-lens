@@ -49,20 +49,28 @@ const FlashCardsComponent: React.FC<Props> = ({
   loadFlashCards
 }) => {
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files || event.target.files.length !== 1) {
+    if (!event.target.files) {
       return;
     }
 
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.readAsText(file, 'UTF-8');
-    reader.onload = evt => {
-      if (!evt.target || typeof evt.target.result !== 'string') {
-        return;
-      }
-      const flashCards: FlashCard[] = JSON.parse(evt.target.result);
-      loadFlashCards(flashCards);
-    };
+    Promise.all<FlashCard[]>(
+      Array.from(event.target.files).map(
+        file =>
+          new Promise(resolve => {
+            const reader = new FileReader();
+            reader.readAsText(file, 'UTF-8');
+            reader.onload = evt => {
+              if (!evt.target || typeof evt.target.result !== 'string') {
+                return;
+              }
+              const flashCards: FlashCard[] = JSON.parse(evt.target.result);
+              resolve(flashCards);
+            };
+          })
+      )
+    ).then(allFlashCards => {
+      loadFlashCards(allFlashCards.flat());
+    });
   };
   const oppositeFirstSide = firstSide === 'front' ? 'back' : 'front';
   return (
@@ -95,8 +103,9 @@ const FlashCardsComponent: React.FC<Props> = ({
         type="file"
         accept="application/json"
         onChange={onChange}
+        multiple
       />
-      <label htmlFor="file">Choose a file</label>
+      <label htmlFor="file">Choose one or more files</label>
     </div>
   );
 };
