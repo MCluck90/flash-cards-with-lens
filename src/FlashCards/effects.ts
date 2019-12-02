@@ -110,6 +110,7 @@ function* switchFirstSideSaga() {
 }
 
 function* loadFlashCardsSaga({ payload }: ReturnType<typeof loadFlashCards>) {
+  yield put(updateState(selectSelectedCardIndex.set(0)));
   yield put(updateState(getFlashCardsFromAppState.set(payload)));
 }
 
