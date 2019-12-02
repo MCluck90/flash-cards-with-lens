@@ -3,7 +3,8 @@ import {
   selectSideToShow,
   selectSelectedCardIndex,
   getFlashCardsFromAppState,
-  getFirstSideFromAppState
+  getFirstSideFromAppState,
+  getSideToShowFromAppState
 } from '../lenses';
 import { updateState } from '@myopia/optics';
 import { AppState, FlashCard } from '../types';
@@ -49,8 +50,13 @@ function* prevCardSaga() {
   const firstSide: AppState['firstSide'] = yield select(
     getFirstSideFromAppState.get
   );
-  yield put(updateState<AppState>(selectSideToShow.set(firstSide)));
-  yield delay(400);
+  const sideToShow: AppState['sideToShow'] = yield select(
+    getSideToShowFromAppState.get
+  );
+  if (firstSide !== sideToShow) {
+    yield put(updateState<AppState>(selectSideToShow.set(firstSide)));
+    yield delay(400);
+  }
 
   const nextSelected =
     selectedCardIndex - 1 < 0 ? numOfCards - 1 : selectedCardIndex - 1;
@@ -66,8 +72,13 @@ function* nextCardSaga() {
   const firstSide: AppState['firstSide'] = yield select(
     getFirstSideFromAppState.get
   );
-  yield put(updateState<AppState>(selectSideToShow.set(firstSide)));
-  yield delay(400);
+  const sideToShow: AppState['sideToShow'] = yield select(
+    getSideToShowFromAppState.get
+  );
+  if (sideToShow !== firstSide) {
+    yield put(updateState<AppState>(selectSideToShow.set(firstSide)));
+    yield delay(400);
+  }
 
   const nextSelected = (selectedCardIndex + 1) % numOfCards;
   yield put(updateState<AppState>(selectSelectedCardIndex.set(nextSelected)));
