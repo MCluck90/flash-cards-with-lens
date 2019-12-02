@@ -8,6 +8,7 @@ export const getFlashCardsFromAppState = Lens.fromProp<AppState>()(
 export const getSelectedCardIndexFromAppState = Lens.fromProp<AppState>()(
   'selectedCardIndex'
 );
+export const getFirstSideFromAppState = Lens.fromProp<AppState>()('firstSide');
 export const getSideToShowFromAppState = Lens.fromProp<AppState>()(
   'sideToShow'
 );

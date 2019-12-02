@@ -28,6 +28,7 @@ export const store = createStore<AppState, OpticsAction<AppState>, void, void>(
 store.dispatch(
   updateState<AppState>(_ => ({
     sideToShow: 'front',
+    firstSide: 'front',
     selectedCardIndex: 0,
     flashCards: [
       {

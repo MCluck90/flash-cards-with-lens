@@ -4,14 +4,16 @@ import { connect, MapDispatchToProps } from 'react-redux';
 import {
   getFlashCardsFromAppState,
   getSelectedCardIndexFromAppState,
-  getSideToShowFromAppState
+  getSideToShowFromAppState,
+  getFirstSideFromAppState
 } from '../lenses';
 import {
   flipCard,
   nextCard,
   shuffle,
   prevCard,
-  loadFlashCards
+  loadFlashCards,
+  switchFirstSide
 } from './effects';
 import { Card } from '../Card/Card';
 import './FlashCards.css';
@@ -20,6 +22,7 @@ interface StateProps {
   flashCards: FlashCard[];
   selectedCardIndex: number;
   sideToShow: 'front' | 'back';
+  firstSide: 'front' | 'back';
 }
 
 interface DispatchProps {
@@ -27,6 +30,7 @@ interface DispatchProps {
   prevCard(): void;
   nextCard(): void;
   shuffle(): void;
+  switchFirstSide(): void;
   loadFlashCards(flashCards: FlashCard[]): void;
 }
 
@@ -35,11 +39,13 @@ type Props = StateProps & DispatchProps;
 const FlashCardsComponent: React.FC<Props> = ({
   selectedCardIndex,
   sideToShow,
+  firstSide,
   flashCards,
   flipCard,
   prevCard,
   nextCard,
   shuffle,
+  switchFirstSide,
   loadFlashCards
 }) => {
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,11 +64,16 @@ const FlashCardsComponent: React.FC<Props> = ({
       loadFlashCards(flashCards);
     };
   };
+  const oppositeFirstSide = firstSide === 'front' ? 'back' : 'front';
   return (
     <div className="FlashCards">
       <h3>
         {selectedCardIndex + 1} / {flashCards.length}
       </h3>
+      <button onClick={() => switchFirstSide()}>
+        Show {oppositeFirstSide} first
+      </button>
+      <br />
       <button className="Shuffle" onClick={() => shuffle()}>
         Shuffle
       </button>
@@ -93,7 +104,8 @@ const FlashCardsComponent: React.FC<Props> = ({
 const mapStateToProps = (state: AppState): StateProps => ({
   flashCards: getFlashCardsFromAppState.get(state),
   selectedCardIndex: getSelectedCardIndexFromAppState.get(state),
-  sideToShow: getSideToShowFromAppState.get(state)
+  sideToShow: getSideToShowFromAppState.get(state),
+  firstSide: getFirstSideFromAppState.get(state)
 });
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({
@@ -101,6 +113,7 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, {}> = dispatch => ({
   prevCard: () => dispatch(prevCard()),
   nextCard: () => dispatch(nextCard()),
   shuffle: () => dispatch(shuffle()),
+  switchFirstSide: () => dispatch(switchFirstSide()),
   loadFlashCards: (flashCards: FlashCard[]) =>
     dispatch(loadFlashCards(flashCards))
 });
