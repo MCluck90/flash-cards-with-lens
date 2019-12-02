@@ -1,4 +1,4 @@
-import { select, takeLatest, put } from '@redux-saga/core/effects';
+import { select, takeLatest, put, delay } from '@redux-saga/core/effects';
 import {
   selectSideToShow,
   selectSelectedCardIndex,
@@ -39,23 +39,27 @@ function* prevCardSaga() {
   const selectedCardIndex: number = yield select(selectSelectedCardIndex.get);
   const flashCards: FlashCard[] = yield select(getFlashCardsFromAppState.get);
   const numOfCards = flashCards.length;
+
+  // Reset to the front before moving to the previous card
+  yield put(updateState<AppState>(selectSideToShow.set('front')));
+  yield delay(400);
+
   const nextSelected =
     selectedCardIndex - 1 < 0 ? numOfCards - 1 : selectedCardIndex - 1;
   yield put(updateState<AppState>(selectSelectedCardIndex.set(nextSelected)));
-
-  // Reset to the front
-  yield put(updateState<AppState>(selectSideToShow.set('front')));
 }
 
 function* nextCardSaga() {
   const selectedCardIndex: number = yield select(selectSelectedCardIndex.get);
   const flashCards: FlashCard[] = yield select(getFlashCardsFromAppState.get);
   const numOfCards = flashCards.length;
+
+  // Reset to the front before moving to the next card
+  yield put(updateState<AppState>(selectSideToShow.set('front')));
+  yield delay(400);
+
   const nextSelected = (selectedCardIndex + 1) % numOfCards;
   yield put(updateState<AppState>(selectSelectedCardIndex.set(nextSelected)));
-
-  // Reset to the front
-  yield put(updateState<AppState>(selectSideToShow.set('front')));
 }
 
 function* shuffleSaga() {
